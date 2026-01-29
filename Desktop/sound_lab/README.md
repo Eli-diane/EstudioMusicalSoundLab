@@ -65,7 +65,7 @@ python3 -m venv venv
 source venv/bin/activate
 ´´´
 
-3. **Instale as dependências***
+3. **Instale as dependências**
 
 Bash
 pip install django demucs
