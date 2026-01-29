@@ -55,12 +55,12 @@ Além da separação, o projeto oferece um **Player/Mixer interativo** no navega
 2. **Crie e ative um ambiente virtual**
 
 bash
-# No Windows
+# Windows
 python -m venv venv
 .\venv\Scripts\activate
 
 
-# No Linux/Mac
+# Linux/Mac
 python3 -m venv venv
 source venv/bin/activate
 ´´´
