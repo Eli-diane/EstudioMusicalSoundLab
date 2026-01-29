@@ -9,10 +9,10 @@
 
 ## 🧠 Sobre o Projeto
 
-O **Studio Sound Lab** é uma aplicação web Fullstack desenvolvida para auxiliar músicos no processo de tirar músicas e ensaiar. O sistema utiliza modelos de **Deep Learning (Demucs)** para desconstruir arquivos MP3 brutos em 4 faixas isoladas: Bateria, Baixo, Voz e Outros (Teclado/Guitarra).
+O **Studio Sound Lab** é uma aplicação web desenvolvida em Django para curadoria e gerenciamento de bibliotecas musicais, focada em organização de metadados e experiência do usuário. 
+O sistema utiliza modelos de **Deep Learning (Demucs)** para desconstruir arquivos MP3 brutos em 4 faixas isoladas: Bateria, Baixo, Voz e Outros (Teclado/Guitarra).
 
-Além da separação, o projeto oferece um **Player/Mixer interativo** no navegador, permitindo controle total sobre o playback para fins de estudo.
-
+Além da separação, o projeto oferece um **Player/Mixer interativo** no navegador, permitindo controle total sobre o playback para fins de estudo. 
 ## ✨ Funcionalidades
 
 - **Separador de Áudio com IA:** Integração com a biblioteca `Demucs` (Meta/Facebook Research) para separação de fontes sonoras.
