@@ -64,7 +64,7 @@ python -m venv venv
 python3 -m venv venv
 source venv/bin/activate
 ´´´
-# INSTALAÇÕES
+# Instalações
 
 3. **Instale as dependências**
 
@@ -92,7 +92,7 @@ Uma vez selecionada uma música no mixer:
 
 **Seta Direita**: Avançar 5 segundos
 
-#📝 Licença
+# 📝 Licença
 Este projeto foi desenvolvido para fins de estudo e portfólio. Sinta-se à vontade para contribuir!
 
 Feito com ❤️ por Eli Santos
