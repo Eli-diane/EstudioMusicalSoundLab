@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Studio Moisés Júnior</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* --- ESTILO GERAL --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #121212; 
+            color: #e0e0e0; 
+            text-align: center; 
+            padding: 50px; 
+        }
+
+        /* Caixa de Upload */
+        .box { 
+            background: #1e1e1e; 
+            padding: 40px; 
+            border-radius: 15px; 
+            display: inline-block; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        /* Inputs */
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 20px 0;
+            display: inline-block;
+            border: 1px solid #333;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #2d2d2d; 
+            color: white;              
+            font-size: 16px;
+        }
+
+        label { float: left; font-weight: bold; margin-bottom: 5px; color: #bb86fc; }
+
+        /* Botão Principal */
+        .btn-processar { 
+            background-color: #bb86fc; 
+            color: #000; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn-processar:hover { background-color: #9955e6; transform: scale(1.02); }
+
+        /* --- O MIXER --- */
+        .mixer-card {
+            background: #1e1e1e;
+            margin-bottom: 40px; 
+            border-radius: 15px;
+            padding: 30px;
+            text-align: left;
+            border: 1px solid #333;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .mixer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap; 
+            gap: 20px;
+        }
+
+        .speed-control {
+            background: #2d2d2d;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #444;
+        }
+        .speed-label { font-size: 0.8em; color: #bb86fc; font-weight: bold; }
+        .speed-value { color: #fff; font-weight: bold; width: 35px; }
+
+        .track-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .track-control {
+            background: #252525;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border-top: 3px solid #bb86fc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .track-title { font-weight: bold; margin-bottom: 10px; display: block; color: #fff; }
+
+        .btn-download {
+            margin-top: 10px;
+            background: #333;
+            color: #aaa;
+            text-decoration: none;
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            transition: 0.2s;
+            display: block;
+        }
+        .btn-download:hover { background: #444; color: #fff; }
+
+        input[type=range] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: #bb86fc;
+        }
+
+        .master-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-play, .btn-stop, .btn-delete {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            text-decoration: none; /* Para o link parecer botão */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-play { background-color: #03dac6; color: black; }
+        .btn-stop { background-color: #cf6679; color: black; }
+        .btn-delete { background-color: #ff4444; color: white; width: 40px;} /* Botão vermelho */
+        .btn-delete:hover { background-color: #cc0000; }
+        
+        audio { width: 100%; margin-top: 10px; height: 30px; }
+
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 3em; margin-bottom: 10px;">🎸 Studio Sound Lab</h1>
+    <p style="color: #888; margin-bottom: 40px;">Inteligência Artificial para Moisés Júnior (AmoR)</p>
+    
+    <div class="box">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label>Nome da Música:</label>
+            {{ form.titulo }}
+            <label>Artista:</label>
+            {{ form.artista }}
+            <label>Arquivo MP3:</label>
+            {{ form.arquivo_original }}
+            <button type="submit" class="btn-processar">🚀 Processar Nova Música</button>
+        </form>
+    </div>
+
+    {% if musicas %}
+        <h2 style="margin-bottom: 30px; border-top: 1px solid #333; padding-top: 30px; color: #bb86fc;">💽 Repertório do Moisés</h2>
+        
+        {% for musica in musicas %}
+            <div class="mixer-card" id="mixer-{{ musica.id }}">
+                
+                <div class="mixer-header">
+                    <div>
+                        <h2 style="margin:0; color: #bb86fc;">{{ musica.titulo }}</h2>
+                        <span style="color: #888;">{{ musica.artista }}</span>
+                    </div>
+
+                    <div class="speed-control">
+                        <span class="speed-label">VELOCIDADE</span>
+                        <input type="range" min="0.5" max="1.5" step="0.1" value="1" style="width: 100px;" oninput="setSpeed('{{ musica.id }}', this.value)">
+                        <span class="speed-value" id="speed-val-{{ musica.id }}">1.0x</span>
+                    </div>
+
+                    <div class="master-controls">
+                        <button class="btn-play" onclick="playAll('{{ musica.id }}')"><i class="fas fa-play"></i></button>
+                        <button class="btn-stop" onclick="stopAll('{{ musica.id }}')"><i class="fas fa-stop"></i></button>
+                        
+                        <a href="{% url 'deletar_musica' musica.id %}" 
+                           onclick="return confirm('⚠️ Tem certeza que deseja excluir {{ musica.titulo }}? Essa ação não tem volta!');" 
+                           class="btn-delete" title="Excluir Música">
+                           <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="track-grid">
+                    <div class="track-control" style="border-top-color: #fff;">
+                        <div>
+                            <span class="track-title">💿 Original</span>
+                            <input type="range" min="0" max="1" step="0.1" value="1" oninput="setVolume('orig-{{ musica.id }}', this.value)">
+                            <audio id="orig-{{ musica.id }}" controls src="{{ musica.arquivo_original.url }}"></audio>
+                        </div>
+                        <a href="{{ musica.arquivo_original.url }}" download class="btn-download"><i class="fas fa-download"></i> Baixar MP3</a>
+                    </div>
+
+                    {% if musica.faixa_bateria %}
+                    <div class="track-control" style="border-top-color: #ff5555;">
+                        <div>
+                            <span class="track-title">🥁 Bateria</span>
+                            <input type="range" min="0" max="1" step="0.1" value="1" oninput="setVolume('bat-{{ musica.id }}', this.value)">
+                            <audio id="bat-{{ musica.id }}" controls src="{{ musica.faixa_bateria.url }}"></audio>
+                        </div>
+                        <a href="{{ musica.faixa_bateria.url }}" download class="btn-download"><i class="fas fa-download"></i> Baixar Stem</a>
+                    </div>
+                    {% endif %}
+
+                    {% if musica.faixa_baixo %}
+                    <div class="track-control" style="border-top-color: #55aaff;">
+                        <div>
+                            <span class="track-title">🎸 Baixo</span>
+                            <input type="range" min="0" max="1" step="0.1" value="1" oninput="setVolume('bx-{{ musica.id }}', this.value)">
+                            <audio id="bx-{{ musica.id }}" controls src="{{ musica.faixa_baixo.url }}"></audio>
+                        </div>
+                        <a href="{{ musica.faixa_baixo.url }}" download class="btn-download"><i class="fas fa-download"></i> Baixar Stem</a>
+                    </div>
+                    {% endif %}
+
+                    {% if musica.faixa_voz %}
+                    <div class="track-control" style="border-top-color: #ffff55;">
+                        <div>
+                            <span class="track-title">🎤 Voz</span>
+                            <input type="range" min="0" max="1" step="0.1" value="1" oninput="setVolume('voz-{{ musica.id }}', this.value)">
+                            <audio id="voz-{{ musica.id }}" controls src="{{ musica.faixa_voz.url }}"></audio>
+                        </div>
+                        <a href="{{ musica.faixa_voz.url }}" download class="btn-download"><i class="fas fa-download"></i> Baixar Stem</a>
+                    </div>
+                    {% endif %}
+
+                    {% if musica.faixa_outros %}
+                    <div class="track-control" style="border-top-color: #55ff55;">
+                        <div>
+                            <span class="track-title">🎹 Teclado / 🎸 Guitarra</span>
+                            <input type="range" min="0" max="1" step="0.1" value="1" oninput="setVolume('out-{{ musica.id }}', this.value)">
+                            <audio id="out-{{ musica.id }}" controls src="{{ musica.faixa_outros.url }}"></audio>
+                        </div>
+                        <a href="{{ musica.faixa_outros.url }}" download class="btn-download"><i class="fas fa-download"></i> Baixar Stem</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <script>
+        function getAudios(id) {
+            return [
+                document.getElementById(`orig-` + id),
+                document.getElementById(`bat-` + id),
+                document.getElementById(`bx-` + id),
+                document.getElementById(`voz-` + id),
+                document.getElementById(`out-` + id)
+            ].filter(audio => audio !== null);
+        }
+
+        function playAll(id) {
+            const audios = getAudios(id);
+            audios.forEach(audio => {
+                audio.play();
+                if(audio.id.includes('orig-')) {
+                    audio.muted = true; 
+                    const sliderOrig = document.querySelector(`input[oninput="setVolume('orig-${id}', this.value)"]`);
+                    if(sliderOrig) sliderOrig.value = 0;
+                }
+            });
+        }
+
+        function stopAll(id) {
+            const audios = getAudios(id);
+            audios.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        }
+
+        function setVolume(elementId, volume) {
+            const audio = document.getElementById(elementId);
+            if (audio) {
+                audio.volume = volume;
+                audio.muted = false;
+            }
+        }
+
+        function setSpeed(id, speed) {
+            document.getElementById(`speed-val-` + id).innerText = speed + "x";
+            const audios = getAudios(id);
+            audios.forEach(audio => {
+                audio.playbackRate = speed;
+            });
+        }
+    </script>
+</body>
+</html>
