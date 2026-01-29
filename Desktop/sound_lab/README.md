@@ -6,13 +6,6 @@
 ![Badge Python](http://img.shields.io/static/v1?label=PYTHON&message=3.10%2B&color=blue&style=for-the-badge)
 ![Badge Django](http://img.shields.io/static/v1?label=DJANGO&message=FRAMEWORK&color=green&style=for-the-badge)
 
-## 📸 Screenshots
-
-<div align="center">
-  <img src="./screenshots/home.png" alt="Tela Inicial" width="700">
-  <br>
-  <em>Painel de Controle e Upload</em>
-</div>
 
 ## 🧠 Sobre o Projeto
 
